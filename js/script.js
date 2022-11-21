@@ -4,11 +4,13 @@ const username = "lisacodesnow";
 const repoList = document.querySelector(".repo-list");
 const displayRepoInfo = document.querySelector(".repos");
 const repoData = document.querySelector(".repo-data");
+const backButton = document.querySelector(".view-repos");
+const filterInput = document.querySelector("input")
 
 const profileInfo = async function(){
 	const githubInfo = await fetch(`https://api.github.com/users/${username}`);
 	const data = await githubInfo.json();
-	console.log(data);
+	//console.log(data);
 	displayInfo(data);
 };
 
@@ -38,8 +40,10 @@ const myRepos = async function(){
 	//console.log(repoData);
 	repoDisplay(repoData);
 }
-// Display Repo Info by calling the list of repos
+
+// Display Repo Info in the red box
 const repoDisplay = function(repoData){
+	filterInput.classList.remove("hide");
 	for (let repo of repoData){
 		const repoItem = document.createElement("li");
 		repoItem.classList.add("repo");
@@ -63,12 +67,12 @@ repoList.addEventListener("click", function(e){
 const specificRepoInfo = async function(repoName){
 	const specificRepo = await fetch(` https://api.github.com/repos/${username}/${repoName}`);
 	const repoInfo = await specificRepo.json();
-	console.log(repoInfo);
+	//console.log(repoInfo);
 	
 	//array of languages
 	const fetchLanguages = await fetch(repoInfo.languages_url) //why don't you have to write the entire url to fetch the languages? How do you know when you fetch to either write the entire url or not?
 	const languageData = await fetchLanguages.json();
-	console.log(languageData);
+	//console.log(languageData);
 	
 	//store each language in an array
 	const languages = [];
@@ -77,12 +81,12 @@ const specificRepoInfo = async function(repoName){
 		languages.push(language);
 	}
 	
-	console.log(languages);
+	//console.log(languages);
 	displaySpecificRepoInfo(repoInfo, languages);
 }
 
 
-//Function to display specific repo info
+//Function to display specific repo info once its clicked on
 
 const displaySpecificRepoInfo = function(repoInfo, languages){
 	repoData.innerText = "";
@@ -97,4 +101,34 @@ const displaySpecificRepoInfo = function(repoInfo, languages){
     <a class="visit" href="${repoInfo.clone_url}" target="_blank" rel="noreferrer noopener">View Repo on GitHub!</a>`
 	
 	repoData.append(newDiv);
+	
+	//show back button
+	backButton.classList.remove("hide");
 };
+
+//Click Event for Back Button
+
+backButton.addEventListener("click", function(){
+	displayRepoInfo.classList.remove("hide");
+	repoData.classList.add("hide");
+	backButton.classList.add("hide");
+})
+
+//Add an Input Event to the Search Box
+
+filterInput.addEventListener("input"/*input is another type of event*/, function(e){
+	let valueText = e.target.value; // targets the value
+	//console.log(valueText);
+	const repos = document.querySelectorAll(".repo"); //this is a class made in JS it won't be in HTML
+	let lowerCaseSearch = valueText.toLowerCase();
+	
+	// this loop is for the repo list changing when a letter is added or removed in the search box so a repo can be found
+	for(let repoLoop of repos){
+		let lowerCaseText = repoLoop.innerText.toLowerCase();
+		if(lowerCaseText.includes(lowerCaseSearch)){
+		   repoLoop.classList.remove("hide");
+		   } else{
+			   repoLoop.classList.add("hide");
+		   }
+	}
+});
