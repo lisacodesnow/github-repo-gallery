@@ -1,5 +1,5 @@
 
-const overview = document.querySelector(".overview"); // profile information will appear
+const overview = document.querySelector(".overview"); 
 const username = "lisacodesnow";
 const repoList = document.querySelector(".repo-list");
 const displayRepoInfo = document.querySelector(".repos");
@@ -32,7 +32,7 @@ const displayInfo = function(data){
 	myRepos();
 }
 
-// list of my repos
+// List of my repos
 
 const myRepos = async function(){
 	let myRepoList = await fetch(` https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
@@ -62,7 +62,7 @@ repoList.addEventListener("click", function(e){
 	
 })
 
-//Function to get specific repo info
+//Get specific repo info
 
 const specificRepoInfo = async function(repoName){
 	const specificRepo = await fetch(` https://api.github.com/repos/${username}/${repoName}`);
@@ -70,7 +70,7 @@ const specificRepoInfo = async function(repoName){
 	//console.log(repoInfo);
 	
 	//array of languages
-	const fetchLanguages = await fetch(repoInfo.languages_url) //why don't you have to write the entire url to fetch the languages? How do you know when you fetch to either write the entire url or not?
+	const fetchLanguages = await fetch(repoInfo.languages_url)
 	const languageData = await fetchLanguages.json();
 	//console.log(languageData);
 	
@@ -86,7 +86,7 @@ const specificRepoInfo = async function(repoName){
 }
 
 
-//Function to display specific repo info once its clicked on
+//Display specific repo info once its clicked on
 
 const displaySpecificRepoInfo = function(repoInfo, languages){
 	repoData.innerText = "";
@@ -102,7 +102,7 @@ const displaySpecificRepoInfo = function(repoInfo, languages){
 	
 	repoData.append(newDiv);
 	
-	//show back button
+
 	backButton.classList.remove("hide");
 };
 
@@ -114,15 +114,15 @@ backButton.addEventListener("click", function(){
 	backButton.classList.add("hide");
 })
 
-//Add an Input Event to the Search Box
+// Search Box
 
-filterInput.addEventListener("input"/*input is another type of event*/, function(e){
-	let valueText = e.target.value; // targets the value
+filterInput.addEventListener("input", function(e){
+	let valueText = e.target.value; 
 	//console.log(valueText);
-	const repos = document.querySelectorAll(".repo"); //this is a class made in JS it won't be in HTML
+	const repos = document.querySelectorAll(".repo"); 
 	let lowerCaseSearch = valueText.toLowerCase();
 	
-	// this loop is for the repo list changing when a letter is added or removed in the search box so a repo can be found
+	// Search box letter results
 	for(let repoLoop of repos){
 		let lowerCaseText = repoLoop.innerText.toLowerCase();
 		if(lowerCaseText.includes(lowerCaseSearch)){
