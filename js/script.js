@@ -29,7 +29,7 @@ const displayInfo = function(data){
       <p><strong>Number of public repos:</strong> ${data.public_repos}</p>
     </div> `;
 	overview.append(userInfoDiv);
-	myRepos();
+	myReposS();
 }
 
 // list of my repos
